@@ -12,7 +12,7 @@
 /*                                                                            */
 /*   main.c                                   cclarice@student.21-school.ru   */
 /*                                                                            */
-/*   Created/Updated: 2021/06/25 01:32:37  /  2021/06/25 01:32:48 @cclarice   */
+/*   Created/Updated: 2021/06/25 01:34:17  /  2021/06/25 01:34:43 @cclarice   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ int	main(void)
 	if (result != 0)
 		return (write(2, "Creating the first  thread\n", 27));
 	id2 = 2;
-	result = pthread_create(&thread1, NULL, thread_func, &id2);
+	result = pthread_create(&thread2, NULL, thread_func, &id2);
 	if (result != 0)
 		return (write(2, "Creating the first  thread\n", 27));
 	result = pthread_join(thread1, NULL);
 	if (result != 0)
 		return (write(2, "Joining the first  thread\n", 26));
-	result = pthread_join(thread1, NULL);
+	result = pthread_join(thread2, NULL);
 	if (result != 0)
 		return (write(2, "Joining the second thread\n", 26));
 	printf("Done\n");
