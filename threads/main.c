@@ -12,7 +12,7 @@
 /*                                                                            */
 /*   main.c                                   cclarice@student.21-school.ru   */
 /*                                                                            */
-/*   Created/Updated: 2021/06/25 01:34:17  /  2021/06/25 01:34:43 @cclarice   */
+/*   Created/Updated: 2021/06/27 02:30:21  /  2021/06/27 04:14:06 @cclarice   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,21 @@
 void	*thread_func(void *arg)
 {
 	int i;
-	int loc_id;
+	char loc_id;
+	char chars[6];
 
-	loc_id = *(int *)arg;
+	loc_id = *(char *)arg;
+	chars[0] = '\033';
+	chars[1] = '[';
+	chars[2] = '3';
+	chars[3] = loc_id;
+	chars[4] = 'm';
+	chars[5] = loc_id;
 	i = 0;
-	while (i < 4)
+	while (i < 0xfffff)
 	{
-		printf("Thread %i is running\n", loc_id);
-		sleep(1);
+		write(1, chars, 6);
+		//usleep(loc_id);
 		i++;
 	}
 	pthread_exit(NULL);
@@ -38,25 +45,21 @@ void	*thread_func(void *arg)
 
 int	main(void)
 {
-	int id1;
-	int id2;
-	int result;
-	pthread_t thread1;
-	pthread_t thread2;
+	char		id[8];
+	pthread_t 	thread[8];
+	int			ptr;
 
-	id1 = 1;
-	result = pthread_create(&thread1, NULL, thread_func, &id1);
-	if (result != 0)
-		return (write(2, "Creating the first  thread\n", 27));
-	id2 = 2;
-	result = pthread_create(&thread2, NULL, thread_func, &id2);
-	if (result != 0)
-		return (write(2, "Creating the first  thread\n", 27));
-	result = pthread_join(thread1, NULL);
-	if (result != 0)
-		return (write(2, "Joining the first  thread\n", 26));
-	result = pthread_join(thread2, NULL);
-	if (result != 0)
-		return (write(2, "Joining the second thread\n", 26));
-	printf("Done\n");
+	ptr = 0;
+	write(1, "\033[1m", 4);
+	while (ptr < 8)
+	{
+		id[ptr] = ptr + '0';
+		pthread_create(&thread[ptr], NULL, thread_func, &id[ptr]);
+		ptr++;
+	}
+	ptr = 0;
+	while (ptr < 8)
+		pthread_join(thread[ptr++], NULL);
+	write(1,"\nDone\n", 6);
+	return (0);
 }
