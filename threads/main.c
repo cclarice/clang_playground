@@ -12,7 +12,7 @@
 /*                                                                            */
 /*   main.c                                   cclarice@student.21-school.ru   */
 /*                                                                            */
-/*   Created/Updated: 2021/06/27 02:30:21  /  2021/06/27 04:14:06 @cclarice   */
+/*   Created/Updated: 2021/06/28 23:36:59  /  2021/06/28 23:37:00 @cclarice   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	*thread_func(void *arg)
 	chars[4] = 'm';
 	chars[5] = loc_id;
 	i = 0;
-	while (i < 0xfffff)
+	while (i < 0xffff)
 	{
 		write(1, chars, 6);
 		//usleep(loc_id);
@@ -51,15 +51,16 @@ int	main(void)
 
 	ptr = 0;
 	write(1, "\033[1m", 4);
-	while (ptr < 8)
+	while (ptr < 1)
 	{
 		id[ptr] = ptr + '0';
 		pthread_create(&thread[ptr], NULL, thread_func, &id[ptr]);
 		ptr++;
 	}
 	ptr = 0;
-	while (ptr < 8)
-		pthread_join(thread[ptr++], NULL);
+	while (ptr < 1)
+		//pthread_join(thread[ptr++], NULL);
+	usleep(1000000);
 	write(1,"\nDone\n", 6);
 	return (0);
 }
